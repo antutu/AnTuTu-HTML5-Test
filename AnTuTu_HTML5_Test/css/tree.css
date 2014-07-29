@@ -1,0 +1,183 @@
+
+/*-----------------------------------*\
+  $TYPOGRAPHY
+\*-----------------------------------*/
+
+h1, .alpha {
+  margin-bottom: 1.5rem;
+
+  font-size: 2rem;
+  font-weight: 100;
+  line-height: 1;
+  letter-spacing: -.05em;
+}
+
+h2, .beta {
+  margin-bottom: .75rem;
+
+  font-weight: 400;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.mega {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.subhead, .meta {
+  color: #7b8993;
+}
+
+.promo {
+  text-align: center;
+}
+
+p, hr {
+  margin-bottom: 1.5rem;
+}
+
+hr {
+  border: none;
+  margin-top: -1px;
+  height: 1px;
+  background-color: #c0c8c9;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+  a:hover {
+    color: #f35626;
+  }
+
+/*-----------------------------------*\
+  $LAYOUT
+\*-----------------------------------*/
+
+.wrap {
+  max-width: 38rem;
+  margin: 0 auto;
+}
+
+.island {
+  padding: 1.5rem;
+}
+
+.isle {
+  padding: .75rem;
+}
+
+.spit {
+  padding: .375rem;
+}
+
+html {
+  /*background-image:url(../img/starfield.jpg);*/
+  background-color: #2C2C2C;
+  background-repeat:repeat;
+  overflow: hidden;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial;
+    width:480px;
+    height:860px;
+}
+canvas {
+    cursor: pointer;
+}
+#vfps {
+    position:absolute;
+    color: #fff;
+    margin: 10px;
+}
+#title {
+    position:absolute;
+    color: #fff;
+/*    margin: 10px;*/
+}
+
+header {
+  margin-top: 0px;
+}
+
+/*-----------------------------------*\
+  $HEADER
+\*-----------------------------------*/
+
+.site__header {
+
+}
+
+  .c0 {
+    color: #ffffff;
+  }
+
+  .c1 {
+    color: #4e6bfa;
+  }
+
+  .c2 {
+    color: #7efacb;
+  }
+
+  .c3 {
+    color: #fa7e3b;
+  }
+
+  .c4 {
+    color: #7faeeb;
+  }
+
+  .c5 {
+    color: #eefa7b;
+  }
+
+  .c6 {
+    color: #3a1a2a;
+  }
+
+  .stitle {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff
+    , 0 0 40px #ff00de, 0 0 70px #ff00de, 0 0 80px #ff00de
+    , 0 0 100px #ff00de, 0 0 150px #ff00de;
+  }
+
+  .stitle2 {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff
+    , 0 0 30px #fff, 0 0 40px #1573DA, 0 0 70px #1573DA
+    , 0 0 80px #1573DA, 0 0 100px #1573DA, 0 0 150px #1573DA;
+  }
+ 
+  .posx {
+       position:absolute;
+       top:20px;
+       width:480px;
+       text-align:center;
+  }
+
+  .posy {
+       position:absolute;
+       top:50px;
+       width:480px;
+       text-align:center;
+  }
+
+ .loop {
+  -webkit-animation-duration: 1.5s;
+  -webkit-animation-iteration-count: infinite;
+          animation-duration: 1.5s;
+          animation-iteration-count: infinite;
+}
+
+ .loop2 {
+  -webkit-animation-duration: 5s;
+  -webkit-animation-iteration-count: infinite;
+          animation-duration: 5s;
+          animation-iteration-count: infinite;
+}

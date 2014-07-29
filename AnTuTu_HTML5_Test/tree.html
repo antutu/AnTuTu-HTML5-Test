@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" id="viewport" content="width=device-width" />
+        <link href="css/tree.css" rel=stylesheet type="text/css">
+        <script src="js/jquery.min.js"></script>
+        <script src="js/viewport.js"></script>
+        <script src="js/modernizr.js"></script>
+        <script src="js/fpsmeter.js"></script>
+        <script src="js/tree.js"></script>
+        <script type="text/javascript">
+            setViewport(480);
+            (function ($) {
+                var vfps = 0;
+                $(function () {
+                  document.addEventListener('fps',
+                      function(evt) {
+                        vfps = evt.fps;
+                      },
+                      false);
+                    FPSMeter.run();
+                    init();
+
+                    window.setTimeout(onTimedOut, 10000);
+
+                });
+                function onTimedOut () {
+                    try {
+                        WebInterface.callBack(vfps);
+                    } catch (err) {
+                    }
+                    try {
+                        msg = vfps;
+                        window.parent.postMessage('[antutu_web_msg]' + msg, '*');
+                    } catch (err) {
+                    }
+                }
+            })(jQuery);
+        </script>
+    </head>
+    <body>
+        <div id="drawArea">
+            <canvas id='canvas'></canvas>
+        </div> 
+        
+      <div id="title" class="posx">
+        <h1 class="mega ">AnTuTu Canvas Test</h1>
+      </div>
+
+    </body>
+</html>

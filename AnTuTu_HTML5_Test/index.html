@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" id="viewport" content="width=device-width" />
+		<title>AnTuTu HTML5 Test</title>
+        <link href="css/animate.min.css" rel=stylesheet type="text/css" />
+        <link href="css/normalize.css" rel=stylesheet type="text/css" />
+        <link href="css/normal2.css" rel=stylesheet type="text/css" />
+        <link href="css/antutu.css" rel=stylesheet type="text/css" />
+        
+        <script language="javascript1.2" src="js/jquery.min.js"></script>
+        <script language="javascript1.2" src="js/viewport.js"></script>
+
+        <script type="text/javascript">
+            var index = 0;
+            var tests = new Array();
+            var displays = new Array();
+            var factors = new Array();
+            var scores = new Array();
+
+            function addTestItem(name, display, factor) {
+                tests[index] = name;
+                displays[index] = display;
+                factors[index] = factor;
+                index++;
+            }
+
+            function firstTest() {
+                $('#info').show();
+                index = -1;
+                nextTest();
+            }
+
+            function nextTest() {
+                index++;
+                if (index < tests.length) {
+                    oTestFrame = document.getElementById('testframe');
+                    //alert(tests[index] + ".html?inner=1")
+                    oTestFrame.src = tests[index] + ".html?inner=1";
+                } else {
+                    onFinish();
+                }
+            }
+
+            function callBack(msg) {
+                data = 0;
+                if (typeof msg == 'object' && msg.data) {
+                    msg = msg.data;
+                }
+                if (msg.length > 16) {
+                    data = msg.slice(16);
+                }
+
+                scores[index] = parseInt(data * factors[index]);
+                console.log(displays[index] + ' : ' + scores[index]);
+
+                nextTest();
+            }
+
+            function preloadFile(file) {
+                try {
+                    // XHR to request a JS and a CSS  
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', file, false);
+                    xhr.send('');
+                } catch (e) {
+                }
+            }
+
+            function preloadAll() {
+                preloadFile("img/skybox/nx.jpg");
+                preloadFile("img/skybox/ny.jpg");
+                preloadFile("img/skybox/nz.jpg");
+                preloadFile("img/skybox/px.jpg");
+                preloadFile("img/skybox/py.jpg");
+                preloadFile("img/skybox/pz.jpg");
+                preloadFile("img/invaders/bullet.png");
+                preloadFile("img/invaders/enemy-bullet.png");
+                preloadFile("img/invaders/explode.png");
+                preloadFile("img/invaders/invader.png");
+                preloadFile("img/invaders/invader32x32x4.png");
+                preloadFile("img/invaders/player.png");
+                preloadFile("img/balls.png");
+                preloadFile("img/rain.png");
+                preloadFile("img/bg.jpg");
+                preloadFile("img/bg_01.png");
+                preloadFile("img/button.png");
+                preloadFile("img/line.png");
+                preloadFile("img/logo-150.png");
+                preloadFile("img/starfield.jpg");
+                preloadFile("js/phaser.min.js");
+                preloadFile("js/three.min.js");
+                preloadFile("js/earley-boyer.js");
+                preloadFile("js/regexp.js");
+                preloadFile("js/code-load.js");
+                preloadFile("js/testharness.js");
+                preloadFile("js/crypto.js");
+                preloadFile("js/raytrace.js");
+                preloadFile("js/deltablue.js");
+                preloadFile("js/richards.js");
+                preloadFile("js/navier-stokes.js");
+                preloadFile("js/base.js");
+                preloadFile("js/splay.js");
+                preloadFile("js/modernizr.js");
+                preloadFile("js/fpsmeter.js");
+                preloadFile("js/test2d.js");
+                preloadFile("js/tree.js");
+                preloadFile("js/CSS3DRenderer.js");
+                preloadFile("js/animatedframestest.js");
+                preloadFile("js/tween.min.js");
+                preloadFile("js/uiperftest.js");
+                preloadFile("js/bootstrap-collapse.js");
+                preloadFile("js/run.js");
+                preloadFile("js/test2d2.js");
+                preloadFile("js/stats.min.js");
+                preloadFile("js/bootstrap-transition.js");
+                preloadFile("js/mbProcessBar/ProcessBar.js");
+                preloadFile("js/mbProcessBar/style.css");
+                preloadFile("js/mbProcessBar/styletest.css");
+                preloadFile("css/bootstrap.css");
+                preloadFile("css/animate.min.css");
+                preloadFile("css/docs.css");
+                preloadFile("css/style.css");
+                preloadFile("css/styletest.css");
+                preloadFile("css/bootstrap-responsive.css");
+                preloadFile("css/normalize.css");
+                preloadFile("css/antutu.css");
+            }
+
+            function load() {
+
+                //setViewport(480);
+
+                /*title = document.getElementById('');
+                 //title.style.fontSize = "32px";
+                 title.style.display = '';*/
+
+                title = document.getElementById('title');
+                title.style.fontSize = "18px";
+                title.style.display = 'block';
+
+
+                if ('addEventListener' in document) {
+                    window.addEventListener('message', callBack, false);
+                } else if ('attachEvent' in document) {
+                    window.attachEvent('onmessage', callBack);
+                }
+                // return 
+                setTimeout(function() {
+                    index = 0;
+                    addTestItem("octane", "JavaScript", 1);
+                    addTestItem("layout", "Layout", 24);
+                    addTestItem("svg_inline", "SVG", 36);       // android 4.4 and above
+                    addTestItem("periodic", "Periodic", 36);  // android 4.0 and above
+                    addTestItem("tree", "Tree", 36);
+                    addTestItem("birds", "Birds", 48);     // android 4.0 and above
+                    addTestItem("game", "Invaders", 36);
+                    addTestItem("collision", "Collision", 48);
+
+                    preloadAll();
+
+                    /*
+                     title = document.getElementById('title');
+                     title.innerHTML = '';
+                     title.style.display = 'none';
+                     */
+                    //$('.loader').hide();
+
+                    title = document.getElementById('title');
+                    title.innerHTML = '';
+                    title.style.display = 'none';
+
+                    oTestFrame = document.getElementById('testframe');
+                    oTestFrame.style.display = 'block';
+
+                    firstTest();
+                }, 100);
+
+            }
+
+            function onFinish() {
+                $('.header').hide();
+                var oTestFrame = document.getElementById('testframe');
+                oTestFrame.src = "testscore.html";
+                //oTestFrame.style.display = 'none';
+                
+
+                /*title = document.getElementById('title');
+                 title.innerHTML = 'AnTuTu HTML5 Test';
+                 title.style.fontSize = "32px";
+                 title.style.display = 'block';
+                 */
+                info = document.getElementById('info');
+                 info.style.display = 'none';
+
+
+            }
+
+           
+        </script>
+        <style>
+            #scoreFrame {
+                color:#fff;
+                display:none;
+                margin-top:30px;
+                width:480px;
+                padding-left:15px;
+                
+            }
+            #info {
+                position: absolute;
+                width: 480px;
+                color: #cfcfcf;
+                font-family: Arial;
+                font-size: 12px;
+                text-align: center;
+                background-color:  rgba(0, 0, 0, 0.35);
+                height:25px;
+                line-height: 25px;
+                margin-top:-25px;
+
+
+            }
+            #infoua {
+                width: 400px;
+                color: #cfcfcf;
+                font-family: Arial;
+                font-size: 12px;
+                text-align: center;
+                display: none;
+                margin-top:30px;
+
+            }
+            #content { 
+                width:100%; 
+                height:5px; 
+                margin:50px auto; 
+                background:#000;
+            }
+            .fullwidth .expand { 
+                width:100%; 
+                height:5px; 
+                /*margin:2px 0; */
+                background:#41b264; 
+                position:absolute;
+                box-shadow:0px 0px 10px 1px rgba(65, 178, 100, 0.7);
+                -moz-animation:fullexpand 10s ease-out;
+                -webkit-animation:fullexpand 10s ease-out;
+            }
+
+            @-moz-keyframes fullexpand {
+                0%  { width:0px;}
+                100%{ width:100%;}  
+            }
+            @-webkit-keyframes fullexpand {
+                0%  { width:0px;}
+                100%{ width:100%;}  
+            }
+        </style>
+    </head>
+    <body onLoad="load()">
+
+<!--         <div class="header" id="header">
+            <h1>AnTuTu &nbspHTML5 &nbspTest</h1>
+        </div> -->
+
+        <div align=center style="width:480px;margin:0 auto;">
+            <iframe id="testframe" frameBorder="0"  style="width:480px;height:800px;box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);display:none;" scrolling=no></iframe>
+
+            <div id="title" class="loop2 animated flash stitle2 c0" style="width:480px;height:750px;margin-top:50px;">AnTuTu HTML5 Test<br><br>Loading...</div>
+
+            <div id="scoreFrame"  align=center></div>
+            <div id="infoua"></div>
+            <div id="info" style="display:none;">
+                Please keep Screen On
+                <div class="processbar"></div>
+            </div>
+
+            <div class="clearfix" />
+        </div>
+        <script type="text/javascript" language="javascript">
+        $(function(){
+
+            var t=window.screen.height;
+            if (t>850){
+                $('body').css('height',t+'px');
+                $('#viewport').attr('content','width=device-width,user-scalable=no');
+            }else{
+                setViewport(480);
+            }
+
+            document.body.onmousewheel = function(){return;}
+        })
+        </script>
+    </body>
+</html>

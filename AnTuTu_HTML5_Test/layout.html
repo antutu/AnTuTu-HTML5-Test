@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta name="viewport" id="viewport" content="width=device-width" />
+<style>
+	#title {
+		position: absolute;
+		top:20px;
+		width: 480px;
+		color: #000;
+		padding: 5px;
+		font-family: Monospace;
+		font-size: 30px;
+		font-weight: bold;
+		text-align: center;
+		z-index: 1;
+	}
+	
+</style>
+<script src="js/viewport.js"></script>
+<script type="text/javascript">
+var sampleFPS, lastSampledTime, sampleFrames;
+var repeat = "Antutu benchmark is the most popular Android smartphone and tablet benchmarking app in the world!<br>No.1 benchmark app,used as an industry standard by most of leading technology companies and hardware review sites.<br>Through click and go test suite, Antutu benchmark measures User Experience, CPU, RAM, 2D/3D graphics, GPU, I/O performance of Android smartphone or tablet. <br>You will get accurate device performance score report. <br>The score will update to the Antutu benchmark database and get your device ranking, which you can share and compare it with other Android devices. <br>安兔兔评测是一款专门为手机、平板电脑等产品进行性能评测和跑分的APP。<br>安兔兔评测可谓是装机必备软件之一，您可以通过它获得精准的设备硬件信息和设备性能得分，并能通过一键验机鉴别设备真伪。<br>安兔兔评测的评测项目主要包括用户体验测试(多任务与虚拟机)、CPU整体性能测试、RAM内存测试、2D/3D图形性能测试以及数据存储I/O的性能检测。<br>安兔兔评测支持用户选择单项测试和完整测试，完成测试后均提供得分详情供，用户可参考分数判断各硬件的性能并作优化。<br>同时，安兔兔评测也加强了对设备信息的检测，能详细的列出设备的CPU型号和核心数以及其它感应器信息。<br>安兔兔评测可直观的体现手机的性能强弱，让您及时了解当时设备性能并作相应优化，在使用音乐、游戏、视频、通话、桌面、微博微信、邮箱、淘宝购物等应用时有更极的体验。<br>";
+var current, results;
+var fps, layoutPadding, borderWidth;
+var div1, div2, div3, div4, div5;
+
+var continueTest;
+var testBegan;
+var sampleDuration = 500;	//minimum of half-second
+var samples;
+
+var outerGrowing = true;
+var MAXDIM = 900;	//layout square dimension
+var outerLong = Math.floor(2 * MAXDIM / 3);
+var outerMax = Math.floor(7 * MAXDIM / 8);
+var outerMin = Math.floor(3 * MAXDIM / 8);
+
+function createLongString(s, numDouble) {
+	'use strict';
+	var out, i;
+
+	out = s;
+	for (i = 0; i < numDouble; i += 1) {
+		out += out;
+	}
+	return out;
+}
+
+function getFrameRate() {
+	'use strict';
+
+	sampleFrames += 1;
+	var diff = new Date().getTime() - lastSampledTime;
+	if (diff >= sampleDuration) {
+		sampleFPS = sampleFrames / (diff / 1000);
+		sampleFrames = 0;
+		lastSampledTime = new Date().getTime();
+	}
+	return sampleFPS;
+}
+
+function reshape() {
+	'use strict';
+	var currentTime, output, timePassed;
+	var top, topPx, longText, longPx, short, shortText, shortPx, margin, side;
+
+	if (outerGrowing) {
+		outerLong += 2;
+		div1.style.fontSize = "12px";
+		div2.style.fontSize = "12px";
+		div3.style.fontSize = "12px";
+		div4.style.fontSize = "12px";
+		div5.style.fontSize = "12px";
+		if (outerLong >= outerMax) {
+			outerGrowing = false;
+		}
+	} else {
+		outerLong -= 2;
+		div1.style.fontSize = "12px";
+		div2.style.fontSize = "12px";
+		div3.style.fontSize = "12px";
+		div4.style.fontSize = "12px";
+		div5.style.fontSize = "12px";
+		if (outerLong <= outerMin) {
+			outerGrowing = true;
+		}
+	}
+
+/*
+	if (outerGrowing) {
+		outerLong += 2;
+		div1.style.fontSize = "15px";
+		div2.style.fontSize = "10px";
+		div3.style.fontSize = "25px";
+		div4.style.fontSize = "20px";
+		div5.style.fontSize = "18px";
+		if (outerLong >= outerMax) {
+			outerGrowing = false;
+		}
+	} else {
+		outerLong -= 2;
+		div1.style.fontSize = "25px";
+		div2.style.fontSize = "15px";
+		div3.style.fontSize = "20px";
+		div4.style.fontSize = "18px";
+		div5.style.fontSize = "10px";
+		if (outerLong <= outerMin) {
+			outerGrowing = true;
+		}
+	}
+
+*/
+	top = 0;
+	topPx = top + "px"
+	longText = outerLong - 2 * layoutPadding - borderWidth;
+	longPx = longText + "px";
+	short = MAXDIM - outerLong;
+	shortText = short - 2 * layoutPadding - borderWidth;
+	shortPx = shortText + "px";
+	margin = (document.body.clientWidth - (longText + shortText)) / 2;
+
+    div1.style.top = topPx;
+    div1.style.left = margin + "px";
+	div1.style.width = longPx;
+	div1.style.height = shortPx;
+
+    div2.style.top = topPx;
+    div2.style.left = (margin + outerLong) + "px";
+	div2.style.width = shortPx;
+	div2.style.height = longPx;
+
+    div3.style.top = (top + longText + 2 * layoutPadding + borderWidth) + "px";
+    div3.style.left = (margin + short) + "px";
+	div3.style.width = longPx;
+	div3.style.height = shortPx;
+    
+    div4.style.top = (top + short) + "px";
+    div4.style.left = margin + "px";
+	div4.style.width = shortPx;
+	div4.style.height = longPx;
+
+	div5.style.top = (top + short) + "px";
+	div5.style.left = (margin + short) + "px";
+	side = (MAXDIM - 2 * (short + layoutPadding) - borderWidth) + "px";
+	div5.style.width = side;
+	div5.style.height = side;
+}
+
+function processFrame() {
+	'use strict';
+
+	if (continueTest) {
+	    reshape();
+		samples += 1;
+	}
+}
+
+window.onload = function () {
+	'use strict';
+	var content;
+
+	content = createLongString(repeat, 2);
+	div1 = document.getElementById("div1");
+	div1.innerHTML = content;
+	div2 = document.getElementById("div2");
+	div2.innerHTML = content;
+	div3 = document.getElementById("div3");
+	div3.innerHTML = content;
+	div4 = document.getElementById("div4");
+	div4.innerHTML = content;
+	div5 = document.getElementById("div5");
+	div5.innerHTML = content;
+	layoutPadding = parseInt(div1.style.padding);
+    borderWidth = parseInt(div1.style.borderWidth);
+    try{
+		parent.document.getelementbyid('processTd').className="fullwidth";
+    }catch(e){
+    }
+    reshape();
+
+	sampleFPS = 0;
+	lastSampledTime = new Date().getTime();
+	sampleFrames = 0;
+	setInterval(processFrame, 1000 / 60);	//60 per second
+	testBegan = new Date().getTime();
+	continueTest = true;
+	samples = 0;
+
+	window.setTimeout(onTimedOut, 10000);
+	
+};
+
+function onTimedOut() {
+	var output = 0;
+    try {
+		continueTest = false;
+		currentTime = new Date().getTime();
+		timePassed = currentTime - testBegan;
+		output = samples / timePassed * 1000;
+    } catch (err) {
+    }
+    try {
+        WebInterface.callBack(output);
+    } catch (err) {
+    }
+	try {
+		msg = output;
+		window.parent.postMessage('[antutu_web_msg]' + msg, '*');
+	} catch (err) {
+	}
+}
+
+setViewport(480);
+
+</script>
+</head>
+<body style="width:100%; background-color:#fcf1db;background-repeat:repeat; ">
+	<div id="title">AnTuTu Layout Test</div>
+	<div id="div1" style="position:absolute; padding:2px; border:solid 0px; overflow: hidden; color: #1d933b"></div>
+	<div id="div2" style="position:absolute; padding:2px; border:solid 0px; overflow: hidden; color: #c3291f"></div>
+	<div id="div3" style="position:absolute; padding:2px; border:solid 0px; overflow: hidden; color: #1d933b;"></div>
+	<div id="div4" style="position:absolute; padding:2px; border:solid 0px; overflow: hidden; color: #118acf;"></div>
+	<div id="div5" style="position:absolute; padding:2px; border:solid 0px; overflow: hidden; color: #000000;"></div>
+
+	
+</body>
+</html>

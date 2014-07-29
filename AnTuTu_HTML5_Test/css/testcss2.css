@@ -1,0 +1,153 @@
+
+/*-----------------------------------*\
+  $TYPOGRAPHY
+\*-----------------------------------*/
+
+h1, .alpha {
+  margin-bottom: 1.5rem;
+
+  font-size: 2rem;
+  font-weight: 100;
+  line-height: 1;
+  letter-spacing: -.05em;
+}
+
+h2, .beta {
+  margin-bottom: .75rem;
+
+  font-weight: 400;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.mega {
+  font-size: 2.4rem;
+  line-height: 1;
+}
+
+.subhead, .meta {
+  color: #7b8993;
+}
+
+.promo {
+  text-align: center;
+}
+
+p, hr {
+  margin-bottom: 1.5rem;
+}
+
+hr {
+  border: none;
+  margin-top: -1px;
+  height: 1px;
+  background-color: #c0c8c9;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+  a:hover {
+    color: #f35626;
+  }
+
+/*-----------------------------------*\
+  $LAYOUT
+\*-----------------------------------*/
+
+.wrap {
+  max-width: 38rem;
+  margin: 0 auto;
+}
+
+.island {
+  padding: 1.5rem;
+}
+
+.isle {
+  padding: .75rem;
+}
+
+.spit {
+  padding: .375rem;
+}
+
+html {
+  background-image:url(../img/starfield.jpg);
+  background-repeat:repeat;
+  overflow: hidden;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  width:480px;
+  height:860px;
+}
+
+/*-----------------------------------*\
+  $HEADER
+\*-----------------------------------*/
+
+.site__header {
+
+}
+
+  .c0 {
+    color: #000000;
+  }
+
+  .c1 {
+    color: #4e6bfa;
+  }
+
+  .c2 {
+    color: #7efacb;
+  }
+
+  .c3 {
+    color: #fa6e3b;
+  }
+
+  .c4 {
+    color: #7faeeb;
+  }
+
+  .c5 {
+    color: #eefa7b;
+  }
+
+  .c6 {
+    color: #3a1a2a;
+  }
+
+  .stitle {
+    /*text-shadow: 2px 2px 0px #eee, 3px 3px 0px #707070;*/
+    text-shadow: 0 0 6px #fefcc9, 3px -3px 9px #feec85,
+ -6px -6px 12px #ffae34, 6px -12px 15px #ec760c,
+  -6px -18px 18px #cd4606, 0 -24px 21px #973716,
+   3px -27px 24px #451b0e;
+  }
+
+ 
+  .posx {
+       position:absolute;
+       top:30px;
+       width:480px;
+       text-align:center;
+  }
+
+  .posy {
+       position:absolute;
+       top:10px;
+  }
+
+ .loop {
+  -webkit-animation-duration: 1.5s;
+  -webkit-animation-iteration-count: infinite;
+          animation-duration: 1.5s;
+          animation-iteration-count: infinite;
+}

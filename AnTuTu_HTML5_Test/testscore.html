@@ -1,0 +1,146 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="css/bootstrap.css" rel="stylesheet" />
+<link href="js/mbProcessBar/style.css" rel="stylesheet" />
+<link href="css/style.css" rel="stylesheet" />
+<style>
+body {
+    background-image: url(img/bg_01.png);
+    padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+.header {
+    background: none repeat scroll 0 0 rgba(219, 61, 46, 0.3) !important;
+    width: 480px;
+    position: absolute;
+    margin-top: -60px;
+    z-index: 9999;
+}
+.header h1 {
+    height: 40px;
+    line-height: 40px;
+    font-size: 16px;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 0px;
+}
+.content_bar {
+    width: 480px;
+    margin-top: 300px;
+    margin-left: -35px;
+}
+.content_bar h3 {
+    text-align: center;
+}
+.totalscore {
+    margin-top: 240px;
+    color: #fff;
+    font-size: 4.1em;
+    text-align: center;
+    width: 480px;
+    font-weight: bold;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+}
+#scoreFrame {
+    margin-top: 45px;
+    margin-left: 45px;
+    width: 480px;
+}
+.loader {
+    /*background: none repeat scroll 0 0 rgba(0, 0, 0, 0.3) !important;*/
+    top: 30px !important;
+    -webkit-animation: loading 2s infinite ease-in-out;
+    -moz-animation: loading 2s infinite ease-in-out;
+    animation: loading 2s infinite ease-in-out;
+}
+.loader svg {
+    margin-top: 40px;
+}
+.btn-retry {
+    margin-top: -20px;
+    margin-left: 153px;
+    width: 174px;
+    height: 47px;
+    text-align: center;
+    background: url(img/button.png) no-repeat;
+    font-size: 1.1em;
+    line-height: 47px;
+    color: #fff;
+    cursor: pointer;
+}
+.infoua{
+    color: #BFBFBF;
+    font-size: 12px;
+    margin-top: 8px;
+    text-align: center;
+    width: 480px;
+}
+</style>
+<script src="js/jquery.js"></script>
+<script src="js/mbProcessBar/ProcessBar.js"></script>
+</head>
+<body>
+<div class="header">
+<h1>AnTuTu HTML5 Test</h1>
+</div>
+<div class="container">
+<div id="main-container">
+<div class="loader">
+<img style="margin-top: 25px;" src="img/logo-150.png">
+</div>
+<div class="totalscore"></div>
+<div id="scoreFrame"></div>
+<div class="btn-retry">Restart</div>
+<div class="infoua" style="display:none;"></div>
+</div>
+</div>
+<script language="javascript">
+var TestClass = {
+    listScoreStar:function() {
+        var scores = parent.window.scores;
+        var displays = parent.window.displays;
+        total = 0;
+        var m = mbProcessBar.initialize($('#scoreFrame'));
+        for (var i = 0;
+        i < scores.length;
+        i++) {
+            var info;
+            if (scores[i] > 0)
+            info = scores[i];
+            else
+            info = "0"
+            
+            total += scores[i];
+            m.add( {
+                'title':displays[i], 'label':info, 'color':scores[i] > 0 ? 'green':'yellow'
+            }
+            )
+        }
+        m.show();
+        $('.totalscore').html('<span>' + total + '</span>');
+
+
+        $('.infoua').show().html(navigator.userAgent);
+       
+        return this;
+    }
+    , bindEvent:function() {
+        $('div.btn-retry').click(function() {
+            $('.header').hide();
+            //parent.document.getElementById('header').style.display = '';
+            parent.firstTest()
+        }
+        )
+    }
+}
+$(function() {
+    TestClass.listScoreStar().bindEvent();
+}
+)
+
+
+
+</script>
+</body>
+</html>

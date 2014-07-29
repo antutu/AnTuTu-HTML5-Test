@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" id="viewport" content="width=device-width" />
+        <link href="css/svg.css" rel=stylesheet type="text/css">
+        <script src="js/viewport.js"></script>
+        <script type="text/javascript">
+            setViewport(480);
+            
+            function hasSVG(){
+                var svgFeature="http://www.w3.org/TR/SVG11/feature#SVG";
+                var supported=(document.implementation && 
+                    (document.implementation.hasFeature ("org.w3c.svg","1.0") || 
+                        document.implementation.hasFeature (svgFeature,"1.1")));
+                return supported;
+            }
+        </script>
+    </head>
+    <body>
+        <div>
+        <svg width="480px" height="600px" xmlns="http://www.w3.org/2000/svg">
+
+            <rect x="0%" y="0%" width="100%" height="100%" opacity="0" onclick="start()" />
+
+            <defs>
+                <filter id="light" filterUnits="userSpaceOnUse" x="120" y="240" width="200" height="200">
+                    <feTurbulence primitiveUnits="objectBoundingBox" id="turb" seed="0" type="turbulence" baseFrequency="0.02" numOctaves="2" />
+                    <feDiffuseLighting primitiveUnits="objectBoundingBox" id="diff" diffuseConstant="1" lighting-color="rgb(150,94,244)" surfaceScale="9" >
+                           <feSpotLight x="0" y="0" z="100" pointsAtX="100" pointsAtY="100" pointsAtZ="10" limitingConeAngle="65"/>
+                    </feDiffuseLighting>
+                </filter>
+                <filter id="shadow" x="0" y="0" width="120%" height="140%">
+                    <feOffset in="SourceAlpha" dx="7" dy="7"/>
+                    <feGaussianBlur stdDeviation="3" result="shadowRes"/>
+                    <feComposite in="SourceGraphic" in2="shadowRes" operator="over"/>
+                </filter>
+                <filter id="water" filterUnits="objectBoundingBox" x="0" y="0" width="100%" height="100%">
+                   <feTurbulence id="turb" stitchTile="stitch" type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="10" result="turbRes"/>
+                   <feGaussianBlur id="blur" stdDeviation="2" result="blurRes"/>
+                   <feArtihmetic in="blurRes" in2="blurRes" operator="arithmetic" k1="0.5"/>
+                   <feDiffuseLighting id="diffuse" lighting-color="rgb(146,188,223)" surfaceScale="20" result="diffuse" >
+                       <feSpotLight x="100" y="200" z="50" pointsAtX="100" pointsAtY="60" pointsAtZ="-50" limitingConeAngle="38"/>
+                   </feDiffuseLighting>
+                   <feComponentTransfer>
+                      <feFuncR type="table" tableValues="0 0.1 0.3 0.7 0.9 1"/>
+                      <feFuncG type="table" tableValues="0 0.1 0.3 0.7 0.9 1"/>
+                      <feFuncB type="table" tableValues="0 0.1 0.3 0.7 0.9 1"/>
+                   </feComponentTransfer>
+                </filter>
+                <filter id="filt" filterUnits="objectBoundingBox" x="0" y="0" width="100%" height="100%">
+                    <feFlood result="blackScreen"/>
+                    <feFlood flood-color="rgb(255,255,255)" result="whiteScreen"/>
+                    <feTurbulence baseFrequency="0.03" numOctaves="2" seed="10" result="turbRes"/>
+                    <feGaussianBlur stdDeviation="1" result="turbRes"/>
+                    <feComposite in="turbRes" in2="blackScreen" operator="arithmetic" k1="1" result="alphaRes"/>
+                    <feBlend in="alphaRes" in2="whiteScreen" mode="normal"/>
+                    <feComponentTransfer result="surface">
+                      <feFuncR type="table" tableValues="0     0.129 0.368 0.039 0.070 0.745 0.466 1"/>
+                      <feFuncG type="table" tableValues="0.058 0.070 0.756 0.313 0.611 0.568 0.478 1"/>
+                      <feFuncB type="table" tableValues="0.584 0.847 0.992 0.058 0.113 0.027 0.388 1"/>
+                      <feFuncA type="discrete" tableValues="1 1"/>
+                    </feComponentTransfer>
+                </filter>
+            </defs>
+
+            <rect id="rect" x="20" y="0" width="200" height="200" filter="url(#water)"/>
+            <rect id="earth" x="240" y="0" width="200" height="200" filter="url(#filt)"/>
+            <rect id="light" x="0" y="0" width="300" height="200" filter="url(#light)"/>
+            <text id="txt" x="0" y="120" font-weight="bold" font-size="28" stroke="orange" fill="white" filter="url(#shadow)">AnTuTu SVG Test</text>
+            <!--<text id="txt" x="0" y="120" font-weight="bold" font-size="42" stroke="orange" fill="white" filter="url(#shadow)">AnTuTu SVG Test</text>-->
+
+        </svg>
+        </div>
+
+        <script type="text/javascript">
+        if(!hasSVG()) {
+            try {
+                WebInterface.callBack(0);
+            } catch(err) {
+            }
+            try {
+              window.parent.postMessage('[antutu_web_msg]0', '*');
+            } catch (err) {
+            }
+        } else {
+            try {
+                var light_x_baseVal = document.getElementById('light').x.baseVal;
+                var light_y_baseVal = document.getElementById('light').y.baseVal;
+                var fps_x_baseVal_item0 = document.getElementById('txt').x.baseVal.getItem(0);
+                var fps_y_baseVal_item0 = document.getElementById('txt').y.baseVal.getItem(0);
+                var fps = document.getElementById('txt');
+                var rect = document.getElementById('rect');
+                var rect_y = rect.y.baseVal;
+                var rect_x = rect.x.baseVal;
+                var earth = document.getElementById('earth');
+                var earth_x = earth.x.baseVal;
+                var earth_y = earth.y.baseVal;
+
+                var PIMult2Div40 = Math.PI * 2 / 40;
+                var PIMult2 = Math.PI * 2
+                var sin = Math.sin
+                var cos = Math.cos
+                var round = Math.round
+                var step = PIMult2 / 360
+                var max = PIMult2 - step
+                var counter = 0
+
+                var startDate = 0;
+                var frameCounter = 0;
+
+                function anim() {
+                    counter = (counter < max) ? (counter + step) : 0;
+                    var x = 100 + (cos(counter) * 50);
+                    var y = 280 + (sin(counter) * 50);
+                    light_x_baseVal.value = x + 20;
+                    light_y_baseVal.value = y + 20;
+                    fps_x_baseVal_item0.value = x-50;
+                    fps_y_baseVal_item0.value = y + 130;
+
+                    var wave = frameCounter / 2;
+                    rect_y.value = -wave;
+                    rect.setAttribute("transform", "translate(0, " + wave + ")");
+
+                    earth_y.value = -frameCounter;
+                    earth.setAttribute("transform", "translate(0," + frameCounter + ")");
+
+                    frameCounter++;
+                    setTimeout(anim,1);
+                }
+
+                function onTimedOut () {
+                  var vfps = round(frameCounter * 100000 / (new Date() - startDate)) / 100;
+                  try {
+                    WebInterface.message("SVG callBack 0");
+                      WebInterface.callBack(vfps);
+                  } catch (err) {
+                  }
+                    try {
+                      msg = vfps;
+                      window.parent.postMessage('[antutu_web_msg]' + msg, '*');
+                    } catch (err) {
+                    }
+                }
+
+                startDate = new Date();
+                setTimeout(anim,1);
+                setTimeout(onTimedOut,10000);
+            } catch (err) {
+                try {
+                    WebInterface.message("SVG callBack 1");
+                    WebInterface.callBack(0);
+                } catch (err) {
+                }
+                try {
+                  window.parent.postMessage('[antutu_web_msg]0', '*');
+                } catch (err) {
+                }
+            }
+        }
+        </script>
+    </body>
+</html>

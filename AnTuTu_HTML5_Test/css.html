@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" id="viewport" content="width=device-width" />
+        <link rel="stylesheet" type="text/css" href="css/uiperftest.css">
+        <link rel="stylesheet" type="text/css" href="css/testharness.css">
+        <link href="css/animate.min.css" rel=stylesheet type="text/css">
+        <link href="css/testcss2.css" rel=stylesheet type="text/css">
+        <script src="js/testharness.js"></script>
+        <script src="js/modernizr.js"></script>
+        <script src="js/fpsmeter.js"></script>
+        <script src="js/uiperftest.js"></script>
+        <script src="js/animatedframestest.js"></script>
+        <script src="js/viewport.js"></script>
+
+    <script type="text/javascript">
+      
+      var timer;
+      var vfps = 0;
+      var index = 3;
+      
+      function startAnimation(index){
+        var color = true;
+        for(var i=0; i<(Math.pow(2, index-1)); i++) {
+          if(color) {
+            AnimatedFramesTest.addColoredFrame();
+            AnimatedFramesTest.frames[i].style['backgroundImage'] = '-o-linear-gradient(top, ' + 
+              'rgba(' + Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+',0.5), ' +
+              'rgba(' + Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+',0.5) )';
+              
+                  AnimatedFramesTest.frames[i].style['backgroundImage'] = '-webkit-linear-gradient(top, ' + 
+              'rgba(' + Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+',0.5), ' +
+              'rgba(' + Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+',0.5) )';
+              
+                  AnimatedFramesTest.frames[i].style['backgroundImage'] = '-moz-linear-gradient(top, ' + 
+              'rgba(' + Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+',0.5), ' +
+              'rgba(' + Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+',0.5) )';
+          } else {
+              AnimatedFramesTest.addCarteFrame();
+          }
+
+          if(i % 4 == 0) {
+            color = !color;
+          }
+        }
+        
+        setTimeout(function() {
+                updateFrames();
+                timer = setInterval(updateFrames,1000);
+            }, 10);
+      }
+      
+      function updateFrames () {
+        var color = true;
+        var frames= AnimatedFramesTest.frames;
+        for (var i=0, l= frames.length; i< l; i++){
+          if(color) {
+          frames[i].style['borderRadius'] = Math.round(Math.random() * 50) + '%';
+          frames[i].style['backgroundImage'] = '-o-linear-gradient(top, ' + 
+      'rgba(' + Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+',0.5), ' +
+      'rgba(' + Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+',0.5) )';
+      
+          frames[i].style['backgroundImage'] = '-webkit-linear-gradient(top, ' + 
+      'rgba(' + Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+',0.5), ' +
+      'rgba(' + Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+',0.5) )';
+      
+          frames[i].style['backgroundImage'] = '-moz-linear-gradient(top, ' + 
+      'rgba(' + Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+',0.5), ' +
+      'rgba(' + Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+',0.5) )';
+      
+          frames[i].style['backgroundColor'] = 'rgb('+ Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')';
+        }
+          frames[i].style['opacity'] = Math.round(Math.random() * 100) / 100;
+
+          x = i%3;
+          if(x == 0)
+            frames[i].style[Modernizr.prefixed('transform')] = 'rotate(' + Math.round(Math.random() * 180 - 360 ) + 'deg)';
+          else if(x == 1)
+            frames[i].style[Modernizr.prefixed('transform')] = 'scale(' + Math.random() + ')';
+          else
+            frames[i].style[Modernizr.prefixed('transform')] = 'skew(' + Math.round(Math.random() * 90 - 45 ) + 'deg, ' + Math.round(Math.random() * 90 - 45 ) + 'deg)';
+
+          if(i % 4 == 0) {
+            color = !color;
+          }
+        }
+      }
+
+      function stopAnimation(){
+        var lfps = vfps;
+        FPSMeter.stop();
+        clearInterval(timer);
+
+        try {
+            WebInterface.callBack(lfps);
+        } catch (err) {
+        }
+        try {
+          msg = lfps;
+          window.parent.postMessage('[antutu_web_msg]' + msg, '*');
+        } catch (err) {
+        }
+      }
+      
+      setViewport(480);
+    </script>
+  </head>
+  <body>
+    <header>
+      <div class="loop animated rubberBand posx">
+        <h1 class="stitle c3 mega ">AnTuTu CSS Test</h1>
+      </div>
+    </header>
+    <script>
+      document.addEventListener('fps',
+          function(evt) {
+            vfps = evt.fps;
+          },
+          false);
+      FPSMeter.run();
+      AnimatedFramesTest.run("AnTuTu HTML5",
+                            ['csstransitions','borderradius','csstransforms','cssgradients','rgba','opacity'],
+                            startAnimation,
+                            stopAnimation);
+    </script>
+  </body>
+</html>

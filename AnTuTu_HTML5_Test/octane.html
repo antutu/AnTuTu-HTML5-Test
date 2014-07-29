@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<!-- Copyright 2013 the V8 project authors. Scroll to the end for full license -->
+<html lang="en">
+    <head>
+        <meta http-equiv="X-UA-Compatible" value="IE=edge" />
+        <meta charset="utf-8" />
+        <title>AnTuTu JavaScript Benchmark</title>
+        <meta name="viewport" id="viewport" content="width=device-width" />
+        <meta http-equiv="Content-Script-Type" content="text/javascript" />
+        <meta name="description"
+              content="Octane 2.0 JavaScript Benchmark - the Javascript benchmark for the modern web" />
+        <meta name="author" content="Octane Team Google">
+        <!-- twitter bootstrap code -->
+        <script src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/mbProcessBar/ProcessBar.js"></script>
+        <script src="js/bootstrap-transition.js"></script>
+        <script src="js/bootstrap-collapse.js"></script>
+        <script src="js/viewport.js"></script>
+        <!-- Octane benchmark code -->
+        <script type="text/javascript" src="js/base.js"></script>
+        <script type="text/javascript" src="js/richards.js"></script>
+        <script type="text/javascript" src="js/deltablue.js"></script>
+        <script type="text/javascript" src="js/crypto.js"></script>
+        <script type="text/javascript" src="js/raytrace.js"></script>
+        <script type="text/javascript" src="js/earley-boyer.js"></script>
+        <script type="text/javascript" src="js/regexp.js"></script>
+        <script type="text/javascript" src="js/splay.js"></script>
+        <script type="text/javascript" src="js/navier-stokes.js"></script>
+        <script type="text/javascript" src="js/code-load.js"></script>
+        
+        <script type="text/javascript">
+            var completed = 0;
+            var benchmarks = BenchmarkSuite.CountBenchmarks();
+            var success = true;
+            var latencyBenchmarks = ["Splay", "Mandreel"];
+            var skipBenchmarks =
+                    typeof skipBenchmarks === "undefined" ? [] : skipBenchmarks;
+
+            function ShowBox(name) {
+                document.getElementById("box-name").innerHTML = name;
+                var bar = document.getElementById("progress-bar").style.width = ""
+                        + ((++completed) / benchmarks) * 100 + "%";
+                mbProcessBar.find(name);
+            }
+
+            function AddResult(name, result) {
+            }
+
+            function AddError(name, error) {
+                console.log(name + ": " + error.message);
+                success = false;
+            }
+
+            function AddScore(score) {
+                document.getElementById("box-name").innerHTML = '';
+                var bar = document.getElementById("progress-bar").style.width = "100%";
+                try {
+                    WebInterface.callBack(score);
+                } catch (err) {
+                }
+                try {
+                    try {
+                        msg = score;
+                        window.parent.postMessage('[antutu_web_msg]' + msg, '*');
+                    } catch (err) {
+                    }
+                } catch (err) {
+                }
+            }
+
+            function Run() {
+                
+                document.getElementById("main-banner").innerHTML = "Running Benchmark...";
+                // append the progress bar elements..
+                document.getElementById("bar-appendix").innerHTML = "<br/><div class=\"progress progress-striped active\" id=\"progress-bar-container\" style=\"visibility:hidden\"><div class=\"bar\"style=\"width: 0%;\" id=\"progress-bar\"></div></div>";
+                var anchor = document.getElementById("run-octane");
+                var parent = document.getElementById("main-container");
+                parent.appendChild(document.getElementById("inside-anchor"));
+                parent.removeChild(anchor);
+
+                //document.getElementById("progress-bar-container").style.visibility = 'visible';
+
+                BenchmarkSuite.RunSuites({
+                    NotifyStart: ShowBox,
+                    NotifyError: AddError,
+                    NotifyResult: AddResult,
+                    NotifyScore: AddScore
+                },
+                skipBenchmarks);
+            }
+
+            function CheckCompatibility() {
+                // If no Typed Arrays support, show warning label.
+                var hasTypedArrays = typeof Uint8Array != "undefined"
+                        && typeof Float64Array != "undefined"
+                        && typeof (new Uint8Array(0)).subarray != "undefined";
+
+               Run();
+            }
+
+            function Load() {
+                setViewport(480);
+                mbProcessBar.show();
+                setTimeout(CheckCompatibility, 200);
+            }
+            
+           
+        </script>
+        <!-- end Octane benchmark code -->
+
+        <!-- Le styles -->
+        <link href="css/bootstrap.css" rel="stylesheet" />
+        <link href="css/styletest.css" rel="stylesheet" />
+        <link href="css/bootstrap-responsive.css" rel="stylesheet" />
+        <link href="js/mbProcessBar/styletest.css" rel="stylesheet" />
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+              <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+    </head>
+
+    <body onLoad="Load()">
+        <div class="container">
+            <div id="main-container">
+                <div class="loader">
+                    <img src="img/logo-150.png">
+                </div>
+                <a id="run-octane" href="javascript:Run()">
+                    <div class="hero-unit" id="inside-anchor" style="display:none;">
+                        <h3 align="center" id="main-banner" >Start Benchmark</h3>
+                        <div id="bar-appendix"></div>
+                        <div class="p-result" id="box-name"></div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="header"></div>
+            <div class="content_bar">
+                <h3>AnTuTu JavaScript Benchmark</h3>
+            </div>
+            <div class="content">
+            </div>
+            <!-- /content -->
+
+        </div>
+        <!-- /container -->
+        <script language="javascript">
+            mbProcessBar.initialize($('.content_bar'));
+        </script>
+    </body>
+</html>
+
+<!--
+// Copyright 2013 the V8 project authors (http://code.google.com/p/v8/). 
+// All rights reserved.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are
+// met:
+//
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above
+//       copyright notice, this list of conditions and the following
+//       disclaimer in the documentation and/or other materials provided
+//       with the distribution.
+//     * Neither the name of Google Inc. nor the names of its
+//       contributors may be used to endorse or promote products derived
+//       from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
